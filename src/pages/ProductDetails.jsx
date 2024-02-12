@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   addCartItemToFirestore,
   addItem,
+  addToLocalStorage,
 } from "../redux/slice/CounterSlice";
 import { useDispatch } from "react-redux";
 import Halmet from "../components/Halmet";
@@ -15,18 +16,18 @@ import { db } from "../firebase/firebaseConfig";
 import { collection,addDoc,doc } from "firebase/firestore";
 import UsegetProductData from "../custem-hooks/getProductData";
 import UseAuth from "../custem-hooks/UserAuth";
+import products from "../assets/data/products";
 export default function ProductDetails() {
        const { currentUser } = UseAuth();
+       
     
-   const { data: products, loader } = UsegetProductData("products");
+  //  const { data: products, loader } = UsegetProductData("products");
+  const loader = true;
    const { data: rating } = UsegetProductData("ratings");
-   const [productsData, setProductsData] = useState(products);
+  //  const [productsData, setProductsData] = useState(products);
 
 const [comments,setComments] = useState(rating)
-   useEffect(() => {
-     // This useEffect runs when 'products' changes
-     setProductsData(products);
-   }, [products]);
+  
   const userReview = useRef('');
   const userMsg = useRef('');
   const [filtred, setFiltred] = useState(products);
@@ -105,10 +106,14 @@ const [comments,setComments] = useState(rating)
       }))
     );
   };
-function handelCartData (item) {
-  dispatch(addItem(item))
-  if(currentUser) {
-    dispatch(addCartItemToFirestore(currentUser?.uid))
+
+function handelCartData(item) {
+  console.log(item)
+  dispatch(addItem(item));
+  if (currentUser?.emailVerified) {
+    dispatch(addCartItemToFirestore(currentUser?.uid));
+  } else {
+    dispatch(addToLocalStorage());
   }
 }
   return (

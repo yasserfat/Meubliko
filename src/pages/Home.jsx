@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import homeImg from "../assets/images/hero-img.png";
+import homeImg from "../assets/images/double-sofa-02.png";
 import Halmet from "../components/Halmet.jsx";
 import { Link } from "react-router-dom";
 import Services from "../services/Services";
@@ -7,10 +7,12 @@ import ProductList from "../UI/ProductList";
 import Counter from "../components/Counter";
 import limitedImg from "../assets/images/counter-timer-img.png";
 import UsegetProductData from "../custem-hooks/getProductData";
+import Loader from "../components/LoaderComp";
+import products from "../assets/data/products.js";
 export default function Home() {
-   
   const dateYear = new Date().getFullYear();
-  const { data: products, loader } = UsegetProductData("products")
+  // const { data: products, loader } = UsegetProductData("products");
+  const loader = true;
   const [trendList, setTrendList] = useState([products]);
   const [bestSales, setBestSales] = useState(products);
   const [populer, setPopuler] = useState(products);
@@ -18,13 +20,11 @@ export default function Home() {
 
   useEffect(() => {
     const filtredWireLessAndMobile = products.filter(
-      (item) => item.category === "wireless" || item.category === "mobile"
+      (item) => item.category === "sofa" || item.category === "sofa"
     );
     const filtredTrend = products.filter((item) => item.category === "chair");
     const filtredSales = products.filter((item) => item.category === "sofa");
-    const filtredPopuler = products.filter(
-      (item) => item.category === "watch"
-    );
+    const filtredPopuler = products.filter((item) => item.category === "chair");
     setWireLessAndMobile(filtredWireLessAndMobile);
     setTrendList(filtredTrend);
     setBestSales(filtredSales);
@@ -32,20 +32,19 @@ export default function Home() {
   }, [products]);
   return (
     <Halmet title="home ">
-      <section className="px-4 py-8 bg-[#d3e2fd]">
-        <div className="container flex flex-col md:flex-row justify-between gap-8 items-center m-auto ">
+      <section className="px-4 py-8 bg-[#ffe8e8]">
+        <div className="container flex flex-col md:flex-row justify-between gap-8 items-center  ">
           <div className="flex flex-col gap-4 md:w-1/2">
-            <p className="text-md md:text-lg text-gray-700 font-medium">
+            <p className="text-md md:text-lg text-gray-600 font-medium">
               Trending product in
               <span className="ml-1">{dateYear}</span>
             </p>
-            <h1 className="font-poppins text-slate-900 text-2xl md:text-3xl font-bold flex flex-wrap">
+            <h1 className="font-poppins text-slate-700 text-2xl md:text-3xl font-bold flex flex-wrap">
               Make Your Interior More Minimalistic & Modern
             </h1>
             <p className="flex flex-wrap text-gray-600 text-md md:text-lg">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat
-              nulla repellat quo eaque alias corporis sunt, facilis nesciunt rem
-              fugit!
+              Discover comfort and style on our furniture website. Browse sofas,
+              tables, and more for your perfect living space.
             </p>
             <Link
               to="/Shop"
@@ -61,7 +60,7 @@ export default function Home() {
       </section>
       <Services />
       {!loader ? (
-        <h1>loading....</h1>
+        <Loader />
       ) : (
         <div>
           {" "}
@@ -70,11 +69,7 @@ export default function Home() {
               Trending Product
             </h1>
             <div className="">
-              {!loader ? (
-                <h1>loading....</h1>
-              ) : (
-                <ProductList data={trendList} />
-              )}
+              {!loader ? <Loader /> : <ProductList data={trendList} />}
             </div>
           </section>
           <section className="container m-auto ">
@@ -82,26 +77,22 @@ export default function Home() {
               Best Sales
             </h1>
             <div className="">
-              {!loader ? (
-                <h1>loading....</h1>
-              ) : (
-                <ProductList data={bestSales} />
-              )}
+              {!loader ? <Loader /> : <ProductList data={bestSales} />}
             </div>
           </section>
-          <section className="bg-[#091a37] p-8 mt-4">
+          <section className="bg-[#ffe8e8]  p-8 mt-4">
             <div className="container flex flex-col md:flex-row justify-center gap-3 items-center m-auto ">
               <div className="flex flex-col ">
-                <h1 className="text-gray-400 text-md font-medium mb-2">
+                <h1 className="text-slate-700 text-md font-medium mb-2">
                   Limited offer
                 </h1>
-                <h1 className="text-slate-100 text-xl font-medium mb-2">
+                <h1 className="text-slate-700 text-xl font-medium mb-2">
                   High Quality
                 </h1>
                 <Counter />
                 <div className="flex justify-center md:justify-start items-center">
                   <Link
-                    className=" flex  w-fit bg-slate-200 rounded-lg text-slate-900 px-6 py-2 text-center mt-4 font-semibold  "
+                    className=" flex  w-fit bg-slate-700 rounded-lg text-slate-200 px-6 py-2 text-center mt-4 font-semibold  "
                     to="/Shop"
                   >
                     Shop now
@@ -118,11 +109,7 @@ export default function Home() {
               New arrives
             </h1>
             <div className="">
-              {!loader ? (
-                <h1>loading....</h1>
-              ) : (
-                <ProductList data={WireLessAndMobile} />
-              )}
+              {!loader ? <Loader /> : <ProductList data={WireLessAndMobile} />}
             </div>
           </section>
           <section className="container m-auto ">

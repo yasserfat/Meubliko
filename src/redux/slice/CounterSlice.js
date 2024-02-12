@@ -1,22 +1,27 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import UseAuth from "../../custem-hooks/UserAuth";
 import { toast } from "react-toastify";
-import { collection, onSnapshot } from 'firebase/firestore'
-
-import { db } from "../../firebase/firebaseConfig";
-import { updateDoc, doc } from "firebase/firestore";
+import { db } from '../../firebase/firebaseConfig'
+import { updateDoc, doc, setDoc } from "firebase/firestore";
+import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     cartItem: localStorage.getItem('cartItem') ? JSON.parse(localStorage.getItem("cartItem")) : [],
     totalAmount: 0,
-    curentUserEmail: ''
+    curentUserEmail: '',
+    status: 'loading',
+    dataFromFireBase: [],
+    finalCartItems: [],
+    isLogedIn: false,
 }
 
 const CounterSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+        getAllData: (state, action) => {
+            state.dataFromFireBase = action.payload.data;
+            state.isLogedIn = action.payload.isLogedIn
+        },
         addItem: (state, action) => {
-
+            state.isLogedIn ? state.cartItem = state.dataFromFireBase : ""
             const filterdData = state.cartItem.find(item => item.id == action.payload.id)
             if (!filterdData) {
                 state.cartItem.push({ ...action.payload, quantity: 1 })
@@ -25,56 +30,40 @@ const CounterSlice = createSlice({
             else {
                 filterdData.quantity++;
             }
-            state.totalAmount = state.cartItem.reduce((prev, cur) => {
-                return prev + (Number(cur.price) * Number(cur.quantity));
-            }, 0);
-            localStorage.setItem("cartItem", JSON.stringify(state.cartItem)); // Convert the array to JSON string
-
-        },
-        concaticatData: (state, action) => {
-            console.log("trigred")
-            action.payload.cartItem?.forEach(itemToAdd => {
-                const filteredData = JSON.parse(localStorage.getItem("cartItem")).find(item => item.id === itemToAdd.id);
-
-                if (!filteredData) {
-                    const existingArray = JSON.parse(localStorage.getItem('cartItem')) || [];
-                    existingArray.push(itemToAdd);
-                    localStorage.setItem('cartItem', JSON.stringify(existingArray));
-                    console.log(JSON.parse(localStorage.getItem("cartItem")), 'push')
-                } else {
-                    const existingArray = JSON.parse(localStorage.getItem('cartItem')) || [];
-                    existingArray.map(item =>
-                        item.id == filteredData.id ? { ...item, quantity: item.quantity + filteredData.quantity } : item
-                    )
-                    localStorage.setItem('cartItem', JSON.stringify(existingArray.map(item =>
-                        item.id == filteredData.id ? { ...item, quantity: itemToAdd.quantity + filteredData.quantity } : item
-                    )));
-                    console.log(JSON.parse(localStorage.getItem("cartItem")), '++++')
-
-                }
-            });
-
-            async function addToDb() {
-                const collectionRef = doc(db, "users", action.payload.id);
-                await updateDoc(collectionRef, { cartItems: JSON.parse(localStorage.getItem("cartItem")) })
-                    .then(() => {
-                        console.log("Document successfully updated.");
-                    })
-                    .catch((error) => {
-                        console.error("Error updating document: ", error);
-                    });
-            }
-            addToDb()
+            console.log(Array.from(state.cartItem))
         },
         deleteItem: (state, action) => {
+            state.isLogedIn ? state.cartItem = state.dataFromFireBase : ""
             state.cartItem = state.cartItem.filter(item => item.id !== action.payload.id)
-            localStorage.setItem("cartItem", JSON.stringify(state.cartItem)); // Convert the array to JSON strin
-
         },
+        total: (state, action) => {
+            state.isLogedIn ? state.cartItem = state.dataFromFireBase : ""
+            state.totalAmount = state.cartItem?.reduce((prev, cur) => {
+                return prev + (Number(cur?.price) * Number(cur?.quantity));
+            }, 0);
+        },
+        addToLocalStorage: (state, action) => {
+            localStorage.setItem("cartItem", JSON.stringify(state.cartItem));
+        },
+        increase: (state, action) => {
+            state.isLogedIn ? state.cartItem = state.dataFromFireBase : ""
+            const filterdData = state.cartItem.find(item => item.id == action.payload.id)
+            filterdData.quantity++;
+        },
+        decrease: (state, action) => {
+            state.isLogedIn ? state.cartItem = state.dataFromFireBase : ""
+            const filterdData = state.cartItem.find(item => item.id == action.payload.id)
+            if (filterdData.quantity >1) {
+
+                filterdData.quantity--;
+            }
+        },
+
         addCartItemToFirestore: (state, action) => {
             async function addToDb() {
                 const collectionRef = doc(db, "users", action.payload);
-                await updateDoc(collectionRef, { cartItems: JSON.parse(localStorage.getItem("cartItem")) }, { merge: true })
+
+                await updateDoc(collectionRef, { cartItems: state.cartItem }, { merge: true })
                     .then(() => {
                         console.log("Document successfully updated.");
                     })
@@ -83,6 +72,44 @@ const CounterSlice = createSlice({
                     });
             }
             addToDb()
+        },
+        mergeCartItemToFirestore: (state, action) => {
+            async function addToDb() {
+                const collectionRef = doc(db, "users", action.payload);
+
+                await updateDoc(collectionRef, { cartItems: state.finalCartItems }, { merge: true })
+                    .then(() => {
+                        console.log("Document successfully updated.");
+                    })
+                    .catch((error) => {
+                        console.error("Error updating document: ", error);
+                    });
+            }
+            if (JSON.parse(localStorage.getItem("cartItem")) && action.payload) {
+                addToDb()
+
+                localStorage.clear()
+            }
+        },
+        mergeData: (state, action) => {
+            if (JSON.parse(localStorage.getItem("cartItem"))) {
+                state.finalCartItems = []
+                state.cartItem?.forEach((item1) => {
+                    // Check if there's a corresponding item with the same 'id' in state.dataFromFireBase
+                    const isFind = state.dataFromFireBase?.find((item2) => item1.id === item2.id);
+
+                    if (isFind) {
+                        // If a matching item is found, update its 'quantity' and add it to state.finalCartItems
+                        state.finalCartItems?.push({ ...isFind, quantity: isFind.quantity + item1.quantity });
+                    } else {
+                        // If no matching item is found, add the item from state.cartItem to state.finalCartItems
+                        state.finalCartItems?.push({ ...item1 });
+                    }
+                });
+
+            } else {
+                state.finalCartItems = state.dataFromFireBase
+            }
         },
         clearState: (state, action) => {
             state.cartItem = []
@@ -90,7 +117,5 @@ const CounterSlice = createSlice({
         }
     }
 });
-
-export const { addItem, clearState, deleteItem, concaticatData, addCartItemToFirestore } = CounterSlice.actions
-
+export const { addItem, mergeData, decrease,increase, mergeCartItemToFirestore, clearState, getAllData, addToLocalStorage, total, deleteItem, addCartItemToFirestore } = CounterSlice.actions
 export default CounterSlice.reducer

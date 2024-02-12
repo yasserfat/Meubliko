@@ -4,6 +4,6 @@
 @tailwind utilities;
 @layer components {
   .sticky_header {
-    @apply bg-[#fdede4] shadow-md sticky top-0 w-full ;
+    @apply bg-[#fdede4] shadow-md sticky h-fit top-0 w-full ;
   }
 }

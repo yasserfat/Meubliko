@@ -5,10 +5,14 @@ export default function ProductList({data}) {
  
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center w-full mb-6">
-      {data?.length == 0 ?<h1>no items</h1> :data?.map((prd) => (
-        <ProductCart key={prd.id} items={prd} />
-      ))}
+    <div className="w-fit mx-auto  grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+      {data?.length == 0 ? (
+        <p className="flex col-span-full my-3 text-slate-600  font-semibold text-xl  text-center">
+          no items
+        </p>
+      ) : (
+        data?.map((prd) => <ProductCart key={prd.id} items={prd} />)
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import serviceData from "../assets/data/serviceData";
-
+import { GrDeliver } from "react-icons/gr";
 export default function Services() {
   return (
     <div className=" py-8">
@@ -7,14 +7,16 @@ export default function Services() {
         {serviceData.map((item, i) => (
           <div
             style={{ backgroundColor: item.bg }}
-            className="p-4 rounded w-full flex justify-center"
+            className="p-4 rounded w-full flex justify-center items-center flex-col"
             key={i}
           >
-            {/* <img className="w-12" src={item.img} alt="" /> */}
+            <img className="w-16" src={item.img} alt="" />
             <div>
-              <h1 className="text-bold text-lg text-slate-900">{item.title}</h1>
-              
-              <p>{item.subtitle}</p>
+              <h1 className="font-bold text-xl mb-2 text-center text-slate-900">
+                {item.title}
+              </h1>
+
+              <p className="text-gray-700">{item.subtitle}</p>
             </div>
           </div>
         ))}

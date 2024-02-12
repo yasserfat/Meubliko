@@ -1,8 +1,15 @@
+import { CartElement } from "@stripe/react-stripe-js";
 import CommenSection from "../components/CommenSection";
 import Halmet from "../components/Halmet";
 import {  useSelector } from "react-redux";
 export default function ChechOut() {
   const { totalAmount, cartItem } = useSelector((cart) => cart.cart);
+  const handelChange = ()=> {
+
+  } 
+  const handelsubmit = (e)=> {
+    e.preventDefault()
+  }
   return (
     <Halmet title="Checkout">
       <CommenSection title="Checkout" />
@@ -12,6 +19,7 @@ export default function ChechOut() {
             <h1 className="font-poppins my-8 text-slate-900 text-2xl font-bold ">
               billing information
             </h1>
+            <CartElement onChange={handelChange}/>
             <form className="">
               <input
                 type="text"
@@ -57,7 +65,10 @@ export default function ChechOut() {
             </div>
             <div className="flex justify-between items-center mb-2 gap-8">
               <span className="text-lg font-semibold">total Price</span>
-              <span className="text-lg font-semibold"><span className="mr-1">$</span>{totalAmount}</span>
+              <span className="text-lg font-semibold">
+                <span className="mr-1">$</span>
+                {totalAmount?.toLocaleString().replace(/,/g, ",")}
+              </span>
             </div>
             <div className="flex justify-between items-center mb-2 gap-8">
               <span className="text-lg font-semibold">Shipping</span>
@@ -66,9 +77,14 @@ export default function ChechOut() {
             <hr />
             <div className="flex justify-between items-center  my-4 gap-8">
               <h2 className="text-xl font-bold"> Total Cost</h2>
-              <span className="text-lg font-semibold"><span className="mr-1">$</span>{totalAmount}</span>
+              <span className="text-lg font-semibold">
+                <span className="mr-1">$</span>
+                {totalAmount?.toLocaleString().replace(/,/g, ",")}
+              </span>
             </div>
-            <button className="bg-slate-100 text-slate-700 rounded px-6 py-2 shadow shadow-gray-500 w-full text-lg font-bold text-center">place an order</button>
+            <button className="bg-slate-100 text-slate-700 rounded px-6 py-2 shadow shadow-gray-500 w-full text-lg font-bold text-center">
+              place an order
+            </button>
           </div>
         </div>
       </div>

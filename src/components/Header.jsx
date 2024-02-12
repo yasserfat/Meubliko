@@ -7,24 +7,24 @@ import user from "../assets/images/user-icon.png";
 import { auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { useRef, useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import UseAuth from "../custem-hooks/UserAuth";
 import { toast } from "react-toastify";
 import { clearState } from "../redux/slice/CounterSlice";
-
+import logo from "../assets/images/logo.png";
 export default function Header() {
-  const { cartItem } = useSelector((data) => data.cart);
+  const { cartItem, dataFromFireBase } = useSelector((data) => data.cart);
   const { currentUser } = UseAuth();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const reffernce = useRef(null);
+  const reference = useRef();
   const [menu, setMenu] = useState(false);
   const togle = useRef(null);
   const logOut = () => {
     signOut(auth)
       .then(() => {
         toast.success("logedOut successfully ");
-      dispatch(clearState());
+        dispatch(clearState());
       })
       .catch((ere) => {
         console.log(ere);
@@ -40,22 +40,22 @@ export default function Header() {
   const togleM = () => {
     togle.current.classList.toggle("hidden");
   };
-  const stickyHearder = () => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 80 ||
-        document.documentElement.scrollTop > 80
-      ) {
-        reffernce.current.classList.add("sticky_header");
-      } else {
-        reffernce.current.classList.remove("sticky_header");
-      }
-    });
+
+  const stickyHeader = () => {
+    if (window.scrollY > 80) {
+      reference.current.classList.add("sticky_header");
+    } else {
+      reference.current.classList.remove("sticky_header");
+    }
   };
   useEffect(() => {
-    stickyHearder();
-    return () => window.removeEventListener("scroll", stickyHearder);
-  });
+    window.addEventListener("scroll", stickyHeader);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", stickyHeader);
+    };
+  }, [reference]);
 
   const routers = [
     {
@@ -67,14 +67,14 @@ export default function Header() {
       element: "Shop",
     },
     {
-      path: "/Cart",
-      element: "Cart",
+      path: "/ContactUs",
+      element: "Contact Us",
     },
   ];
   return (
     <nav
-      className="p-4 shadow h-fit relative  z-50 transition-all duration-300 ease-in-out  "
-      ref={reffernce}
+      className="p-4 shadow sticky_header h-fit  z-50 transition-all duration-300 ease-in-out  "
+      ref={reference}
     >
       <div
         className={`fixed z-20 top-0 left-0 w-full ${
@@ -88,7 +88,7 @@ export default function Header() {
           !menu ? "-right-full" : "right-0 "
         } h-screen bg-slate-100 w-[50%]   z-30 transition-all duration-300 ease-in-out`}
       >
-        <div className=" gap-5 container flex justify-center items-center flex-col  text-black ">
+        <div className=" gap-8 container flex justify-center items-center flex-col  text-slate-700 ">
           {routers.map((item) => (
             <NavLink
               className={({ isActive }) =>
@@ -112,19 +112,20 @@ export default function Header() {
       </div>
       <div className="container m-auto flex justify-between  items-center">
         <div className="flex gap-1  items-center">
-          <BsFillBagCheckFill className="font-medium text-xl text-gray-500" />
           <Link
             to="/"
             className="font-extrabold text-xl text-slate-800 font-mono"
           >
-            E-SHOP
+            <img src={logo} className="w-12 scale-[1.7]" alt="" />
           </Link>
         </div>
-        <div className=" gap-2 hidden md:flex ">
+        <div className=" gap-5 hidden md:flex ">
           {routers.map((item) => (
             <NavLink
               className={({ isActive }) =>
-                isActive ? "font-extrabold text-md " : "text-md font-semibold "
+                isActive
+                  ? "font-extrabold text-md  text-slate-700"
+                  : "text-slate-700 text-md font-semibold "
               }
               to={item.path}
               key={item.path}
@@ -142,39 +143,15 @@ export default function Header() {
           </div>
           <div className="relative">
             <span className="absolute -top-1 left-1 bg-black text-white w-4 text-center h-4 rounded-full text-xs ">
-              {JSON.parse(localStorage.getItem("cartItem"))?.length|| 0}
+              {JSON.parse(localStorage.getItem("cartItem"))
+                ? JSON.parse(localStorage.getItem("cartItem"))?.length
+                : dataFromFireBase?.length || 0}
             </span>
-            <Link to="/Cart">
-              <AiOutlineShoppingCart className="w-6 h-6" />
-            </Link>
-          </div>
-          <div className="relative">
-            <img
-              className="w-8 h-8 rounded-full cursor-pointer"
-              src={currentUser ? currentUser.photoURL : user}
-              alt=""
-              onClick={togleM}
-            />
-            <div
-              onClick={togleM}
-              ref={togle}
-              className="bg-gray-500 hidden  absolute cursor-pointer bottom-[-200%] -right-16 px-8 py-1 rounded-md  flex-col gap-3 text-slate-200 "
-            >
-              <div>
-                {!currentUser ? (
-                  <div className="flex flex-col gap-2">
-                    <Link to="/Signup">signup</Link>
-                    <Link to="/Login">login</Link>
-                    <Link to="/DashBoard">DashBoard</Link>
-                  </div>
-                ) : (
-                  <button onClick={logOut}>logOut</button>
-                )}
-              </div>
-            </div>
+
+            <AiOutlineShoppingCart className="w-6 h-6" />
           </div>
 
-          <div className="ml-4">
+          <div className="ml-1">
             <AiOutlineMenu
               onClick={OpenMenu}
               className="text-xl cursor-pointer font-bold text-slate-800 md:hidden "

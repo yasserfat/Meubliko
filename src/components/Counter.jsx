@@ -9,7 +9,7 @@ export default function Counter() {
   });
   let interval;
   const calculateDate = () => {
-    const destination = new Date("7 Oct,2023").getTime();
+    const destination = new Date("7 Mar,2024").getTime();
     interval = setInterval(() => {
       const now = new Date().getTime();
       const deffrent = destination - now;
@@ -39,39 +39,39 @@ export default function Counter() {
     calculateDate();
   }, []);
   return (
-    <div className="flex items-center justify-center gap-6 text-slate-100 p-2 ">
+    <div className="bg-sky_blue flex items-center justify-center gap-6 text-slate-700 p-2 ">
       <div className="flex gap-3 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-3xl shadow-slate-600 ">
+          <h1 className="font-bold text-xl shadow-slate-700 ">
             {dateCounter.days}
           </h1>
           <p className=" ">Days</p>
         </div>
-        <span className="font-bold text-3xl ">:</span>
+        <span className="font-bold text-xl ">:</span>
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-3xl shadow-slate-600 ">
+          <h1 className="font-bold text-xl shadow-slate-600 ">
             {" "}
             {dateCounter.Hours}
           </h1>
           <p className=" ">Hours</p>
         </div>
-        <span className="font-bold text-3xl ">:</span>
+        <span className="font-bold text-xl ">:</span>
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-3xl shadow-slate-600 ">
+          <h1 className="font-bold text-xl shadow-slate-600 ">
             {" "}
             {dateCounter.Minutes}
           </h1>
           <p className="">Minutes</p>
         </div>
-        <span className="font-bold text-3xl ">:</span>
+        <span className="font-bold text-xl ">:</span>
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-3xl shadow-slate-600 ">
+          <h1 className="font-bold text-xl shadow-slate-600 ">
             {" "}
             {dateCounter.Seconds}
           </h1>

@@ -2,22 +2,47 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import { AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { BiLocationPlus } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.png";
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
-
   return (
     <footer className="p-8 mt-4 bg-[#091a37] text-gray-400 ">
       <div className="container grid gap-4 m-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
         <div>
           <div className="flex gap-1 items-center  ">
-            <BsFillBagCheckFill className="font-normal text-xl text-gray-500" />
+            {/* <BsFillBagCheckFill className="font-normal text-xl text-gray-500" /> */}
             <Link
               to="/"
               className="font-bold text-2xl text-slate-600 font-poppins"
             >
-              E-SHOP
+              Meubliko
             </Link>
           </div>
+          <ul className="flex mt-3 space-x-4">
+              <a
+                href="https://web.facebook.com/Meubliko/?_rdc=1&_rdr"
+                target="blank"
+              >
+                <FaFacebook className="text-2xl" />
+              </a>
+               <a
+                href="https://web.facebook.com/Meubliko/?_rdc=1&_rdr"
+                target="blank"
+              >
+
+              <FaInstagram className="text-2xl " />
+              </a>
+               <a
+                href="https://web.facebook.com/Meubliko/?_rdc=1&_rdr"
+                target="blank"
+              >
+              <FaYoutube className="text-2xl" />
+
+              </a>
+            
+            
+          </ul>
           <p className="mt-3 text-gray-600">
             Lorem ipsum dolor sit amet, consectetur adipisicing elie.
           </p>
@@ -42,13 +67,13 @@ export default function Footer() {
               <Link to="/Shop">Shop</Link>
             </li>
             <li>
-              <Link to="/Cart">Cart</Link>
+              <Link to="/ContactUs">Contact Us</Link>
             </li>
             <li>
               <Link to="/Login">Login</Link>
             </li>
             <li>
-              <Link to="/Cart">Privicy policy</Link>
+              <Link to="/ContactUs">Privicy policy</Link>
             </li>
           </ul>
         </div>
@@ -62,7 +87,7 @@ export default function Footer() {
             <li className=" flex gap-1 items-center ">
               {" "}
               <AiFillPhone />
-              +213669282074
+              +213556437656
             </li>
             <li className=" flex gap-1 items-center ">
               {" "}

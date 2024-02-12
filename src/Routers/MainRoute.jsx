@@ -12,6 +12,7 @@ import AllProducts from "../admin/AllProducts";
 import DashBoard from "../admin/DashBoard";
 import Users from "../admin/Users";
 import Verifey from "../pages/Verifey";
+import ContactUs from "../components/ContactUs";
 export default function MainRoute() {
   return (
     <Routes>
@@ -25,7 +26,7 @@ export default function MainRoute() {
         <Route path="DashBoard/AddProducts" element={<AddProducts />} />
         <Route path="DashBoard/Users" element={<Users />} />
       </Route>
-
+      <Route path="/ContactUs" element = {<ContactUs/>} />
       <Route path="/Shop/:id" element={<ProductDetails />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/SignUp" element={<SignUp />} />

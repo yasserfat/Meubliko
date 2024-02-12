@@ -3,60 +3,60 @@ import CommenSection from "../components/CommenSection";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillDelete } from "react-icons/ai";
 import {} from "react-redux";
+import Loader from "../components/LoaderComp";
 import {
   addCartItemToFirestore,
+  addToLocalStorage,
+  decrease,
   deleteItem,
-  concaticatData,
+  increase,
 } from "../redux/slice/CounterSlice";
 import { Link } from "react-router-dom";
 import UsegetProductData from "../custem-hooks/getProductData";
 import UseAuth from "../custem-hooks/UserAuth";
 import { useEffect, useState } from "react";
-import { current } from "@reduxjs/toolkit";
 export default function Cart() {
-  const { totalAmount } = useSelector((cart) => cart.cart);
+  const { totalAmount, dataFromFireBase } = useSelector((cart) => cart.cart);
   const { currentUser } = UseAuth();
   const dispatch = useDispatch();
   const { data: cartIm, loader } = UsegetProductData("users");
-
-  const [cartItems, setCartItem] = useState([]);
-  const [load, setLoader] = useState(loader);
   const [isLogedIn, setIsLogedIn] = useState(currentUser?.emailVerified);
-  useEffect(() => {
-    console.log(currentUser?.emailVerified);
-    if (currentUser?.emailVerified && loader) {
-      console.log(cartIm[0]?.cartItems, "?????@@2222");
-      dispatch(
-        concaticatData({
-          cartItem: cartItems,
-          id: currentUser.uid,
-        })
-      );
-    }
-    setCartItem(
-      localStorage.getItem("cartItem")
-        ? JSON.parse(localStorage.getItem("cartItem"))
-        : []
-    );
-    console.log(JSON.parse(localStorage.getItem("cartItem")), "++++");
 
-    setIsLogedIn(currentUser?.emailVerified);
-  }, [currentUser, loader]);
+
+
   function handelDeleteItems(item) {
     dispatch(deleteItem(item));
     if (currentUser?.emailVerified) {
       dispatch(addCartItemToFirestore(currentUser?.uid));
+    }   else {
+      dispatch(addToLocalStorage());
+    }
+  }
+  function handelIncrease(item) {
+    dispatch(increase(item))
+    if (currentUser?.emailVerified) {
+      dispatch(addCartItemToFirestore(currentUser?.uid));
+    } else {
+      dispatch(addToLocalStorage());
+    }
+  }
+  function handelDecrease(item) {
+    dispatch(decrease(item))
+    if (currentUser?.emailVerified) {
+      dispatch(addCartItemToFirestore(currentUser?.uid));
+    } else {
+      dispatch(addToLocalStorage());
     }
   }
   return (
     <Halmet title="cart">
       <CommenSection title="cart" />
       {!loader ? (
-        <h1>loading ....</h1>
+        <Loader />
       ) : (
           currentUser?.emailVerified
-            ? cartIm[0]?.cartItems?.length === 0
-            : cartItems?.length === 0
+            ? dataFromFireBase?.length === 0
+            : JSON.parse(localStorage.getItem("cartItem"))?.length === 0
         ) ? (
         <h1 className="text-3xl text-slate-950 font-bold text-center p-12">
           No product
@@ -74,12 +74,12 @@ export default function Cart() {
               </tr>
             </thead>
             <tbody className="p-4">
-              {(isLogedIn
-                ? cartIm[0]?.cartItems
+              {(currentUser?.emailVerified
+                ? dataFromFireBase
                 : JSON.parse(localStorage.getItem("cartItem"))
               )?.map((item) => {
                 return (
-                  <tr key={item.id} className="space-y-14">
+                  <tr key={item.id} className="space-y-14  text-center">
                     <th>
                       <img className="w-32 md:w-40" src={item.imgUrl} alt="" />
                     </th>
@@ -89,8 +89,20 @@ export default function Cart() {
                     <th className="text-sm md:text:lg font-semibold">
                       {item.price}
                     </th>
-                    <th className="text-sm md:text:lg font-semibold">
-                      {item.quantity}
+                    <th className="text-sm md:text:lg font-semibold  text-center">
+                      <span
+                        className="mr-1 cursor-pointer  p-1 bg-slate-300 rounded "
+                        onClick={() => handelIncrease(item)}
+                      >
+                        +
+                      </span>
+                      <span className="my-2"> {item.quantity}</span>
+                      <span
+                        onClick={() => handelDecrease(item)}
+                        className=" p-1 cursor-pointer ml-2 bg-slate-300 rounded"
+                      >
+                        -
+                      </span>
                     </th>
                     <th className="text-red-600 text-xl cursor-pointer">
                       <AiFillDelete onClick={() => handelDeleteItems(item)} />
@@ -106,7 +118,7 @@ export default function Cart() {
               <p className="text-xl font-bold">
                 {" "}
                 <span className="mr-1">$</span>
-                {totalAmount}
+                {totalAmount?.toLocaleString().replace(/,/g, ",")}
               </p>
             </div>
             <p className="text-gray-600 mt-4 mb-8">
