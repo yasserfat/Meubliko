@@ -32,13 +32,13 @@ export const content = {
             name: "Name",
             subject: "Subject",
             message: "Message",
-            send:"Send"
+            send: "Send"
 
         },
-        "title":{
-            services:"Fearures",
-            trend:"Trending Product",
-            products:"products"
+        "title": {
+            services: "Fearures",
+            trend: "Trending Product",
+            products: "products"
         }
     },
     "ar": {
@@ -78,13 +78,14 @@ export const content = {
         "title": {
             "services": "الميزات",
             "trend": "المنتج الرائج",
-            "products": "المنتجات"
+            "products": "المنتجات",
+            offers: "Limited offer"
         }
 
     },
     "fr": {
         "landing": {
-            title: "Rendez votre intérieur plus minimaliste et moderne",
+            tille: "Rendez votre intérieur plus minimaliste et moderne",
             desc: "Découvrez le confort et le style sur notre site web de meubles. Parcourez les canapés, les tables et plus encore pour votre espace de vie parfait",
             shortDesc: "Produit tendance dans",
             btn: "ACHETER MAINTENANT"

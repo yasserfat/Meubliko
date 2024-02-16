@@ -20,7 +20,7 @@ import logo from "../assets/images/logo.png";
 import { MdOutlineLanguage } from "react-icons/md";
 import alg from "../assets/images/algeria.png";
 import en from "../assets/images/united-kingdom.png";
-import fr from "../assets/images/france.png"
+import fr from "../assets/images/france.png";
 import { content } from "../assets/data/content";
 export default function Header() {
   const { cartItem, dataFromFireBase } = useSelector((data) => data.cart);
@@ -73,7 +73,7 @@ export default function Header() {
 
   return (
     <nav
-      className="p-4 shadow sticky_header h-fit  z-50 transition-all duration-300 ease-in-out  "
+      className="p-4 shadow  sticky_header h-fit  z-50 transition-all duration-300 ease-in-out  "
       ref={reference}
     >
       <div
@@ -86,7 +86,7 @@ export default function Header() {
       <div
         className={`fixed md:hidden flex justify-center items-center   top-0 ${
           !menu ? "-right-full" : "right-0 "
-        } h-screen bg-slate-100 w-[50%]   z-30 transition-all duration-300 ease-in-out`}
+        } h-screen bg-slate-100 w-[70%]   z-30 transition-all duration-300 ease-in-out`}
       >
         <div className=" gap-8 container flex justify-center items-center flex-col  text-slate-700 ">
           {content[lg].header.routers.map((item) => (
@@ -167,7 +167,7 @@ export default function Header() {
         </div>
       </div>
       <ul
-        className={`bg-gray-200 absolute top-24 rounded right-32 p-3 shadow duration-500 overflow-hidden ${
+        className={`bg-gray-200 absolute z-50 top-24 rounded right-5  md:right-20 p-3 shadow duration-500 overflow-hidden ${
           lang ? "hidden" : "block"
         }  `}
       >

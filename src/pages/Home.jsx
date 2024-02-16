@@ -71,31 +71,26 @@ export default function Home() {
       ) : (
         <div>
           {" "}
-          <section className="bg-[#ffe8e8]  p-8 mt-4">
+          <section className="bg-[#ffe8e8] text-center  p-8 mt-4">
             <div
-              className={`container flex flex-col   justify-between ${
+              className={`container flex flex-col  justify-between ${
                 lang == "ar" ? "md:flex-row-reverse" : "md:flex-row"
               } gap-3 items-center m-auto `}
             >
-              <div className="flex flex-col ">
-                <h1 className="text-slate-700 text-md font-medium mb-2">
+              <div className="flex flex-col items-center  w-full justify-center ">
+                <h1 className="font-poppins mb-4 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
                   Limited offer
                 </h1>
-                <h1 className="text-slate-700 text-xl font-medium mb-2">
-                  High Quality
-                </h1>
+
                 <Counter />
-                <div className="flex justify-center md:justify-start items-center">
+                <div className="flex justify-center  items-center">
                   <Link
-                    className=" flex  w-fit bg-slate-700 rounded-lg text-slate-200 px-6 py-2 text-center mt-4 font-semibold  "
+                    className=" flex  w-fit bg-slate-700 rounded-lg text-white px-6 py-2 text-center mt-4 font-semibold  "
                     to="/Shop"
                   >
                     Shop now
                   </Link>
                 </div>
-              </div>
-              <div className="flex mt-5 md:justify-end">
-                <img className="" src={limitedImg} alt="" />
               </div>
             </div>
           </section>

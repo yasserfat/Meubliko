@@ -4,6 +4,9 @@ import {
   addItem,
   addToLocalStorage,
 } from "../redux/slice/CounterSlice";
+import "@splidejs/react-splide/css/sea-green";
+
+import { Splide, SplideSlide } from "@splidejs/react-splide";
 import { useDispatch, useSelector } from "react-redux";
 import Halmet from "../components/Halmet";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -116,6 +119,7 @@ export default function ProductDetails() {
       dispatch(addToLocalStorage());
     }
   }
+
   return (
     <Halmet title={item?.productName}>
       <CommenSection title={item?.productName} />
@@ -125,8 +129,15 @@ export default function ProductDetails() {
         <section className="p-4">
           <div className="container m-auto flex items-center flex-col md:flex-row justify-between ">
             <div className="w-full md:w-1/2">
-              <img className="w-full md:w-2/3" src={item.imgUrl[0]} alt="" />
+              <Splide aria-label="My Favorite Images">
+                {item.imgUrl.map((img, i) => (
+                  <SplideSlide key={i}>
+                    <img src={img} alt="Image 1" />
+                  </SplideSlide>
+                ))}
+              </Splide>
             </div>
+
             <div className="p-3 flex-1">
               <h1 className="text-3xl font-poppins text-slate-950 font-semibold mb-2">
                 {item.productName}
@@ -158,74 +169,9 @@ export default function ProductDetails() {
               >
                 description
               </li>
-              <li
-                onClick={() => setTab("rev")}
-                className={`text-slate-900 cursor-pointer text-lg ${
-                  tab === "rev"
-                    ? "font-extrabold  text-orange-500"
-                    : "font-semibold"
-                } `}
-              >
-                reviews{" "}
-              </li>
             </ul>
             <div className="container m-auto">
-              {tab === "desc" ? (
-                <p className="text-gray-600 mt-3">{item.description}</p>
-              ) : (
-                <div>
-                  <div className="gap-3 grid grid-col-1 items-center justify-items-center p-4 sm:grid-cols-2 md:grid-cols-3">
-                    {reviews}
-                  </div>
-                  <div className="flex justify-center items-center flex-col p-2 gap-2 w-full">
-                    <h1 className="text-3xl text-slate-950 font-bold text-center p-12">
-                      Add review
-                    </h1>
-
-                    <form
-                      onSubmit={(e) => handleSubmit(e)}
-                      className="flex gap-4 justify-center items-center flex-col p-2 w-full"
-                    >
-                      <div className="flex gap-4 items-center">
-                        <div className="flex gap-2">
-                          {ratingData.map((item, i) => {
-                            return item.state ? (
-                              <AiFillStar
-                                key={i}
-                                onClick={() => handleRating(item.rate)}
-                              />
-                            ) : (
-                              <AiOutlineStar
-                                key={i}
-                                onClick={() => handleRating(item.rate)}
-                              />
-                            );
-                          })}
-                        </div>
-                        <p className="text-lg font-bold ">( {ratingVal})</p>
-                      </div>
-                      <input
-                        ref={userMsg}
-                        required
-                        type="text"
-                        className="w-full md:w-1/2 px-6 py-2 focus:outline-none border rounded"
-                        placeholder="Your name ..."
-                      />
-
-                      <textarea
-                        required
-                        ref={userReview}
-                        type="text"
-                        className="w-full md:w-1/2 px-6 py-2 focus:outline-none border rounded"
-                        placeholder="Your comment ..."
-                      />
-                      <button className="bg-slate-900 text-slate-100 rounded-md flex px-6 py-2 mt-3 shadow-md shadow-slate-500">
-                        Submit
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              )}
+              <p className="text-gray-600 mt-3">{item.description}</p>
             </div>
           </div>
           <section className="container m-auto ">
