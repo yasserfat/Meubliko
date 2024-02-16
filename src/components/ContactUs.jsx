@@ -4,7 +4,10 @@ import { FaInstagram } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import emailjs from "@emailjs/browser";
 import { useRef } from "react";
+import { content } from "../assets/data/content";
+import { useSelector } from "react-redux";
 export default function ContactUs() {
+  const {lang} = useSelector(store=> store.cart)
   const form = useRef();
 
   const sendEmail = (e) => {
@@ -27,13 +30,16 @@ export default function ContactUs() {
     <div className="p-8">
       <div className="grid sm:grid-cols-2 items-center gap-16 my-6 mx-auto max-w-4xl bg-white text-[#333] font-[sans-serif]">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-700">Let's Talk</h1>
+          <h1 className="text-3xl font-extrabold text-slate-700">
+            {content[lang].contact.title}
+          </h1>
           <p className="text-sm text-gray-400 mt-3">
-            Have some big idea or brand to develop and need help? Then reach out
-            we'd love to hear about your project and provide help.
+            {content[lang].contact.desc}
           </p>
           <div className="mt-12">
-            <h2 className="text-lg font-extrabold  text-slate-700">Email</h2>
+            <h2 className="text-lg font-extrabold  text-slate-700">
+              {content[lang].contact.email}
+            </h2>
             <ul className="mt-3">
               <li className="flex items-center">
                 <div className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
@@ -43,14 +49,15 @@ export default function ContactUs() {
                   href="javascript:void(0)"
                   className="text-slate-700 text-sm ml-3"
                 >
-                  <small className="block ">Mail</small>
                   <strong>info@example.com</strong>
                 </a>
               </li>
             </ul>
           </div>
           <div className="mt-12">
-            <h2 className="text-lg font-extrabold  text-slate-700">Socials</h2>
+            <h2 className="text-lg font-extrabold  text-slate-700">
+              {content[lang].contact.socials}
+            </h2>
             <ul className="flex mt-3 space-x-4">
               <li className="bg-[#e6e6e6cf] h-10 w-10 rounded-full flex items-center justify-center shrink-0">
                 <a
@@ -72,24 +79,24 @@ export default function ContactUs() {
         <form className="ml-auo space-y-4" ref={form} onSubmit={sendEmail}>
           <input
             type="text"
-            placeholder="Name"
+            placeholder={content[lang].contact.name}
             name="name"
             className="w-full rounded-md py-3 px-4 bg-gray-100 text-sm outline-slate-700"
           />
           <input
             type="email"
-            placeholder="Email"
+            placeholder={content[lang].contact.email}
             name="email"
             className="w-full rounded-md py-3 px-4 bg-gray-100 text-sm outline-slate-700"
           />
           <input
             type="text"
-            placeholder="Subject"
+            placeholder={content[lang].contact.subject}
             name="Subject"
             className="w-full rounded-md py-3 px-4 bg-gray-100 text-sm outline-slate-700"
           />
           <textarea
-            placeholder="Message"
+            placeholder={content[lang].contact.message}
             name="Message"
             rows="6"
             className="w-full rounded-md px-4 bg-gray-100 text-sm pt-3 outline-slate-700"
@@ -98,7 +105,7 @@ export default function ContactUs() {
             type=""
             className="text-white bg-slate-700 font-semibold rounded-md text-sm px-4 py-3 w-full"
           >
-            Send
+            {content[lang].contact.send}
           </button>
         </form>
       </div>

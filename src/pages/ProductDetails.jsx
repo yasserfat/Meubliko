@@ -4,7 +4,7 @@ import {
   addItem,
   addToLocalStorage,
 } from "../redux/slice/CounterSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Halmet from "../components/Halmet";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 // import products from "../assets/data/products";
@@ -13,24 +13,24 @@ import CommenSection from "../components/CommenSection";
 import ProductList from "../UI/ProductList";
 import { toast } from "react-toastify";
 import { db } from "../firebase/firebaseConfig";
-import { collection,addDoc,doc } from "firebase/firestore";
+import { collection, addDoc, doc } from "firebase/firestore";
 import UsegetProductData from "../custem-hooks/getProductData";
 import UseAuth from "../custem-hooks/UserAuth";
 import products from "../assets/data/products";
+import realProduct from "../assets/data/RealProducts";
 export default function ProductDetails() {
-       const { currentUser } = UseAuth();
-       
-    
+  const { currentUser } = UseAuth();
+  const { lang } = useSelector((store) => store.cart);
   //  const { data: products, loader } = UsegetProductData("products");
   const loader = true;
-   const { data: rating } = UsegetProductData("ratings");
+  const { data: rating } = UsegetProductData("ratings");
   //  const [productsData, setProductsData] = useState(products);
 
-const [comments,setComments] = useState(rating)
-  
-  const userReview = useRef('');
-  const userMsg = useRef('');
-  const [filtred, setFiltred] = useState(products);
+  const [comments, setComments] = useState(rating);
+
+  const userReview = useRef("");
+  const userMsg = useRef("");
+  const [filtred, setFiltred] = useState(realProduct);
   const [ratingVal, setRatingVal] = useState(5);
   const [ratingData, setRatingData] = useState([
     {
@@ -55,38 +55,38 @@ const [comments,setComments] = useState(rating)
     },
   ]);
   const { id } = useParams();
-  const item = products.find((item) => item.id == id);
-  
+  const item = realProduct[lang].find((item) => item.id == id);
+  console.log(item, "temssss");
+
   useEffect(() => {
-    setFiltred(products.filter((prd) => prd.category === item.category));
+    setFiltred(realProduct);
   }, [item]);
- const handleSubmit = async(e) => {
-   e.preventDefault(); 
-   const reviewMsg = userMsg.current.value;
-   const reviewUser = userReview.current.value;
-   const reviewObj = {
-    reviewMsg,
-    reviewUser,
-    ratingVal,
-    filtrProperty:item.id
-   }
-   try {
-    const collections = collection(db,'ratings')
-    await addDoc(collections,reviewObj)
-    
-   } catch (error) {
-    console.error(error)
-   }
-   toast.success("review added successfuly")
-  //  console.log(reviewObj)
- };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const reviewMsg = userMsg.current.value;
+    const reviewUser = userReview.current.value;
+    const reviewObj = {
+      reviewMsg,
+      reviewUser,
+      ratingVal,
+      filtrProperty: item.id,
+    };
+    try {
+      const collections = collection(db, "ratings");
+      await addDoc(collections, reviewObj);
+    } catch (error) {
+      console.error(error);
+    }
+    toast.success("review added successfuly");
+    //  console.log(reviewObj)
+  };
 
   const dispatch = useDispatch();
   const [tab, setTab] = useState("desc");
-  useEffect(()=> {
-  setComments(rating.filter(pro => pro.filtrProperty == item.id))
-  },[rating])
-  
+  useEffect(() => {
+    setComments(rating.filter((pro) => pro.filtrProperty == item.id));
+  }, [rating]);
+
   const reviews = comments.map((rev, i) => (
     <div key={i} className="bg-gray-200 rounded-md py-2 px-5 ">
       <h1 className="text-md font-poppins font-bold mb-1">{rev.reviewUser}</h1>
@@ -107,15 +107,15 @@ const [comments,setComments] = useState(rating)
     );
   };
 
-function handelCartData(item) {
-  console.log(item)
-  dispatch(addItem(item));
-  if (currentUser?.emailVerified) {
-    dispatch(addCartItemToFirestore(currentUser?.uid));
-  } else {
-    dispatch(addToLocalStorage());
+  function handelCartData(item) {
+    console.log(item);
+    dispatch(addItem(item));
+    if (currentUser?.emailVerified) {
+      dispatch(addCartItemToFirestore(currentUser?.uid));
+    } else {
+      dispatch(addToLocalStorage());
+    }
   }
-}
   return (
     <Halmet title={item?.productName}>
       <CommenSection title={item?.productName} />
@@ -125,31 +125,21 @@ function handelCartData(item) {
         <section className="p-4">
           <div className="container m-auto flex items-center flex-col md:flex-row justify-between ">
             <div className="w-full md:w-1/2">
-              <img className="w-full md:w-2/3" src={item.imgUrl} alt="" />
+              <img className="w-full md:w-2/3" src={item.imgUrl[0]} alt="" />
             </div>
             <div className="p-3 flex-1">
               <h1 className="text-3xl font-poppins text-slate-950 font-semibold mb-2">
-                'kk'
+                {item.productName}
               </h1>
-              <div className="flex gap-3 items-center">
-                <div className="flex gap-1">
-                  <AiFillStar className="text-orange-500 font-bold text-lg" />
-                  <AiFillStar className="text-orange-500 font-bold text-lg" />
-                  <AiFillStar className="text-orange-500 font-bold text-lg" />
-                  <AiFillStar className="text-orange-500 font-bold text-lg" />
-                  <AiOutlineStar className="text-orange-500 font-bold text-lg" />
-                </div>
-                <p className="font-medium mr-2">
-                  ( <span className="font-medium mr-2">{item.avgRating}</span>)
-                </p>
-              </div>
+              <div className="flex gap-3 items-center"></div>
               <p className="text-lg font-semibold text-slate-950 my-2">
-                <span>$</span>
                 {item.price}
               </p>
               <p className="text-gray-600 text-md">{item.shortDesc}</p>
               <button
-                onClick={() => {handelCartData(item)}}
+                onClick={() => {
+                  handelCartData(item);
+                }}
                 className="bg-slate-900 text-slate-100 rounded-md flex px-6 py-2 mt-3 shadow-md shadow-slate-500"
               >
                 Add to cart
@@ -243,7 +233,7 @@ function handelCartData(item) {
               You might also like
             </h1>
             <div className="">
-              <ProductList data={filtred} />
+              <ProductList data={realProduct} />
             </div>
           </section>
         </section>

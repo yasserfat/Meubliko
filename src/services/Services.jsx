@@ -1,10 +1,13 @@
-import serviceData from "../assets/data/serviceData";
+import { useSelector } from "react-redux";
+import featuresData from "../assets/data/serviceData";
 import { GrDeliver } from "react-icons/gr";
+
 export default function Services() {
+  const {lang} = useSelector(store=> store.cart)
   return (
     <div className=" py-8">
       <div className="container gap-4  m-auto grid items-center grid-cols-1 sm:grid-cols-3  justify-items-center">
-        {serviceData.map((item, i) => (
+        {featuresData[lang].map((item, i) => (
           <div
             style={{ backgroundColor: item.bg }}
             className="p-4 rounded w-full flex justify-center items-center flex-col"

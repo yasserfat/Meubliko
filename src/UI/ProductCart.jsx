@@ -9,18 +9,18 @@ import {
 import { updateCurrentUser } from "firebase/auth";
 import UseAuth from "../custem-hooks/UserAuth";
 export default function ProductCart({ items }) {
+  console.log(items,"items")
   const { currentUser } = UseAuth();
   const dispatch = useDispatch();
   function addItemtoCart(item) {
-   dispatch(addItem(item));
-   if (currentUser?.emailVerified) {
-     dispatch(addCartItemToFirestore(currentUser?.uid));
-   } else {
-     dispatch(addToLocalStorage());
-   }
+    dispatch(addItem(item));
+    if (currentUser?.emailVerified) {
+      dispatch(addCartItemToFirestore(currentUser?.uid));
+    } else {
+      dispatch(addToLocalStorage());
+    }
   }
 
-  
   return (
     <>
       {/* <div className="p-2 shadow-md shadow-slate-600 relative">
@@ -50,7 +50,7 @@ export default function ProductCart({ items }) {
         <div>
           <Link to={`/Shop/${items.id}`}>
             <img
-              src={items.imgUrl}
+              src={items.imgUrl[0]}
               alt="Product"
               className="h-80 w-72 object-cover rounded-t-xl"
             />
@@ -64,16 +64,12 @@ export default function ProductCart({ items }) {
                 {items.shortDesc}
               </p>
             </Link>
-            
+
             <div className="flex items-center">
               <p className="text-lg font-semibold text-black cursor-auto my-3">
                 {items.price}
               </p>
-              <del>
-                <p className="text-sm text-gray-600 cursor-auto ml-2">
-                  {+items.price + 109}
-                </p>
-              </del>
+              <del></del>
 
               <div className="ml-auto">
                 <svg

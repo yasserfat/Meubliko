@@ -10,6 +10,7 @@ const initialState = {
     dataFromFireBase: [],
     finalCartItems: [],
     isLogedIn: false,
+    lang: localStorage.getItem("lang") ? localStorage.getItem("lang") :"en"
 }
 
 const CounterSlice = createSlice({
@@ -53,7 +54,7 @@ const CounterSlice = createSlice({
         decrease: (state, action) => {
             state.isLogedIn ? state.cartItem = state.dataFromFireBase : ""
             const filterdData = state.cartItem.find(item => item.id == action.payload.id)
-            if (filterdData.quantity >1) {
+            if (filterdData.quantity > 1) {
 
                 filterdData.quantity--;
             }
@@ -114,8 +115,25 @@ const CounterSlice = createSlice({
         clearState: (state, action) => {
             state.cartItem = []
             localStorage.clear()
-        }
+        },
+        arabic: (state, action) => {
+            state.lang = "ar"
+            console.log("ar")
+            localStorage.setItem("lang", state.lang)
+        },
+        english: (state, action) => {
+            state.lang = "en"
+            console.log("en")
+            localStorage.setItem("lang", state.lang)
+
+        },
+        francais: (state, action) => {
+            state.lang = "fr"
+            console.log("en")
+            localStorage.setItem("lang", state.lang)
+        },
     }
 });
-export const { addItem, mergeData, decrease,increase, mergeCartItemToFirestore, clearState, getAllData, addToLocalStorage, total, deleteItem, addCartItemToFirestore } = CounterSlice.actions
+
+export const { addItem, mergeData, decrease, increase, mergeCartItemToFirestore, clearState, getAllData, addToLocalStorage, total, deleteItem, addCartItemToFirestore, english, arabic, francais } = CounterSlice.actions
 export default CounterSlice.reducer

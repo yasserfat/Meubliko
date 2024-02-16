@@ -9,8 +9,13 @@ import limitedImg from "../assets/images/counter-timer-img.png";
 import UsegetProductData from "../custem-hooks/getProductData";
 import Loader from "../components/LoaderComp";
 import products from "../assets/data/products.js";
+import { content } from "../assets/data/content.js";
+import { useSelector } from "react-redux";
+import realProduct from "../assets/data/RealProducts.jsx";
 export default function Home() {
   const dateYear = new Date().getFullYear();
+  const { lang } = useSelector((store) => store.cart);
+  console.log(lang, "lang");
   // const { data: products, loader } = UsegetProductData("products");
   const loader = true;
   const [trendList, setTrendList] = useState([products]);
@@ -32,56 +37,46 @@ export default function Home() {
   }, [products]);
   return (
     <Halmet title="home ">
-      <section className="px-4 py-8 bg-[#ffe8e8]">
-        <div className="container flex flex-col md:flex-row justify-between gap-8 items-center  ">
-          <div className="flex flex-col gap-4 md:w-1/2">
+      <section className="px-4 py-8 md:py-20 bg-[#ffe8e8] ">
+        <div className="container flex flex-col m-auto md:flex-row justify-center gap-8 items-center  ">
+          <div className="flex flex-col gap-4 md:w-1/2 ">
             <p className="text-md md:text-lg text-gray-600 font-medium">
-              Trending product in
-              <span className="ml-1">{dateYear}</span>
+              {content[lang].landing.shortDesc}
+              <span className="mx-1">{dateYear}</span>
             </p>
             <h1 className="font-poppins text-slate-700 text-2xl md:text-3xl font-bold flex flex-wrap">
-              Make Your Interior More Minimalistic & Modern
+              {content[lang].landing.tille}
             </h1>
             <p className="flex flex-wrap text-gray-600 text-md md:text-lg">
-              Discover comfort and style on our furniture website. Browse sofas,
-              tables, and more for your perfect living space.
+              {content[lang].landing.desc}
             </p>
             <Link
               to="/Shop"
-              className="bg-slate-800 rounded-md w-fit px-8 py-2 font-semibold text-slate-50 text-center my-4 shadow-slate-600"
+              className="bg-slate-800 rounded-md m-auto md:m-0 w-fit px-8 py-2 font-semibold text-slate-50 text-center my-4 shadow-slate-600"
             >
-              SHOP NOW
+              {content[lang].landing.btn}
             </Link>
           </div>
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 w-full">
             <img src={homeImg} alt="" />
           </div>
         </div>
       </section>
+      <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
+        {content[lang].title.services}
+      </h1>
       <Services />
       {!loader ? (
         <Loader />
       ) : (
         <div>
           {" "}
-          <section className="container m-auto ">
-            <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
-              Trending Product
-            </h1>
-            <div className="">
-              {!loader ? <Loader /> : <ProductList data={trendList} />}
-            </div>
-          </section>
-          <section className="container m-auto ">
-            <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
-              Best Sales
-            </h1>
-            <div className="">
-              {!loader ? <Loader /> : <ProductList data={bestSales} />}
-            </div>
-          </section>
           <section className="bg-[#ffe8e8]  p-8 mt-4">
-            <div className="container flex flex-col md:flex-row justify-center gap-3 items-center m-auto ">
+            <div
+              className={`container flex flex-col   justify-between ${
+                lang == "ar" ? "md:flex-row-reverse" : "md:flex-row"
+              } gap-3 items-center m-auto `}
+            >
               <div className="flex flex-col ">
                 <h1 className="text-slate-700 text-md font-medium mb-2">
                   Limited offer
@@ -106,20 +101,36 @@ export default function Home() {
           </section>
           <section className="container m-auto ">
             <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
+              {content[lang].title.trend}
+            </h1>
+            <div className="">
+              {!loader ? <Loader /> : <ProductList data={realProduct[lang]} />}
+            </div>
+          </section>
+          {/* <section className="container m-auto ">
+            <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
+              Best Sales
+            </h1>
+            <div className="">
+              {!loader ? <Loader /> : <ProductList data={bestSales} />}
+            </div>
+          </section> */}
+          {/* <section className="container m-auto ">
+            <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
               New arrives
             </h1>
             <div className="">
               {!loader ? <Loader /> : <ProductList data={WireLessAndMobile} />}
             </div>
-          </section>
-          <section className="container m-auto ">
+          </section> */}
+          {/* <section className="container m-auto ">
             <h1 className="font-poppins mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
               populer in category
             </h1>
             <div className="">
               <ProductList data={populer} />
             </div>
-          </section>
+          </section> */}
         </div>
       )}
     </Halmet>

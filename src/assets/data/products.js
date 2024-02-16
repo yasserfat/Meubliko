@@ -28,6 +28,7 @@ import productImg23 from "../images/wireless-01.png";
 
 import productImg25 from "../images/wireless-03.png";
 
+
 const products = [
   {
     id: "01",
