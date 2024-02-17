@@ -127,13 +127,13 @@ export default function ProductDetails() {
       {!loader ? (
         <h1>loading ...</h1>
       ) : (
-        <section className="p-4">
+        <section className="p-4  ">
           <div className="container m-auto flex items-center flex-col md:flex-row justify-between ">
-            <div className="w-full md:w-1/2">
+            <div className="w-[115%] md:w-1/2">
               <Splide aria-label="My Favorite Images">
                 {item.imgUrl.map((img, i) => (
-                  <SplideSlide key={i}>
-                    <img src={img} alt="Image 1" />
+                  <SplideSlide key={i} onClick={() => console.log("dd")}>
+                    <img src={img} className="w-full" alt="Image 1" />
                   </SplideSlide>
                 ))}
               </Splide>

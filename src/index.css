@@ -11,10 +11,10 @@
     @apply bg-[#fdede4] shadow-md sticky h-fit top-0 w-full;
   }
 }
-html {
+* {
  font-family: "Noto Kufi Arabic", sans-serif;
   font-optical-sizing: auto;
-
+box-sizing: border-box;
   font-style: normal;
 
 }

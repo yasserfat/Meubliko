@@ -186,7 +186,7 @@ const realProduct = {
     },
     {
       id: "03",
-      productName: "Chambre à coucher",
+      productName: "Salle a mangé",
       imgUrl: [
         table01,
         table02,

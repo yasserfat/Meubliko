@@ -37,7 +37,7 @@ export default function Home() {
   }, [products]);
   return (
     <Halmet title="home ">
-      <section className="px-4 py-8 md:py-20 bg-[#ffe8e8] ">
+      <section className="px-4 py-8 md:py-20 bg-[#ffe8e8] relative overflow-hidden ">
         <div className="container flex flex-col m-auto md:flex-row justify-center gap-8 items-center  ">
           <div className="flex flex-col gap-4 md:w-1/2 ">
             <p className="text-md md:text-lg text-gray-600 font-medium">

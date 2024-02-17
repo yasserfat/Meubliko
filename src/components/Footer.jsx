@@ -1,8 +1,8 @@
-import { BsFillBagCheckFill } from "react-icons/bs";
+
 import { AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { BiLocationPlus } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import logo from "../assets/images/logo.png";
+
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { content } from "../assets/data/content";
@@ -41,9 +41,7 @@ export default function Footer() {
               <FaYoutube className="text-2xl" />
             </a>
           </ul>
-          <p className="mt-3 text-gray-600">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elie.
-          </p>
+          <p className="mt-3 text-gray-600"> {content[lang].landing.tille}</p>
         </div>
 
         <div>
