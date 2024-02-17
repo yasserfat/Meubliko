@@ -34,7 +34,7 @@ export default function ContactUs() {
             {content[lang].contact.title}
           </h1>
           <p className="text-sm text-gray-400 mt-3">
-            {content[lang].contact.desc}
+            {content[lang].landing.desc}
           </p>
           <div className="mt-12">
             <h2 className="text-lg font-extrabold  text-slate-700">

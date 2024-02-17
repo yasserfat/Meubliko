@@ -17,12 +17,8 @@ export default function Counter() {
       const Hours = Math.floor(
         (deffrent % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
-      const minute = Math.floor(
-        (deffrent % (1000 * 60 * 60 )) / (1000 * 60 )
-      );
-      const Seconds = Math.floor(
-        (deffrent % (1000 * 60  )) / (1000  )
-      );
+      const minute = Math.floor((deffrent % (1000 * 60 * 60)) / (1000 * 60));
+      const Seconds = Math.floor((deffrent % (1000 * 60)) / 1000);
 
       if (destination < 0) clearInterval(interval.current);
       else {
@@ -42,40 +38,40 @@ export default function Counter() {
     <div className="bg-sky_blue flex items-center justify-center gap-6 text-slate-700 p-2 ">
       <div className="flex gap-3 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-xl shadow-slate-700 ">
+          <h1 className="font-bold text-2xl shadow-slate-700 ">
             {dateCounter.days}
           </h1>
-          <p className=" ">Days</p>
+          <p className=" font-bold text-lg shadow-slate-700">Days</p>
         </div>
         <span className="font-bold text-xl ">:</span>
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-xl shadow-slate-600 ">
+          <h1 className="font-bold text-2xl shadow-slate-700  ">
             {" "}
             {dateCounter.Hours}
           </h1>
-          <p className=" ">Hours</p>
+          <p className="  font-bold text-lg shadow-slate-700">Hours</p>
         </div>
         <span className="font-bold text-xl ">:</span>
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-xl shadow-slate-600 ">
+          <h1 className="font-bold text-2xl shadow-slate-700  ">
             {" "}
             {dateCounter.Minutes}
           </h1>
-          <p className="">Minutes</p>
+          <p className=" font-bold text-lg shadow-slate-700">Minutes</p>
         </div>
         <span className="font-bold text-xl ">:</span>
       </div>
       <div className="flex gap-2 items-center">
         <div className="flex flex-col items-center justify-end">
-          <h1 className="font-bold text-xl shadow-slate-600 ">
+          <h1 className="font-bold text-2xl shadow-slate-700  ">
             {" "}
             {dateCounter.Seconds}
           </h1>
-          <p className=" ">Seconds</p>
+          <p className=" font-bold text-lg shadow-slate-700 ">Seconds</p>
         </div>
       </div>
     </div>

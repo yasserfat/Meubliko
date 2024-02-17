@@ -143,9 +143,7 @@ export default function Header() {
           </div>
           <div className="relative">
             <span className="absolute -top-1 left-1 bg-black text-white w-4 text-center h-4 rounded-full text-xs ">
-              {JSON.parse(localStorage.getItem("cartItem"))
-                ? JSON.parse(localStorage.getItem("cartItem"))?.length
-                : dataFromFireBase?.length || 0}
+              0
             </span>
 
             <AiOutlineShoppingCart className="w-6 h-6" />

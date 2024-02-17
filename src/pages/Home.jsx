@@ -71,24 +71,27 @@ export default function Home() {
       ) : (
         <div>
           {" "}
-          <section className="bg-[#ffe8e8] text-center  p-8 mt-4">
+          <section className="bg-[#ffb1b1] text-center  p-8 mt-4">
             <div
               className={`container flex flex-col  justify-between ${
                 lang == "ar" ? "md:flex-row-reverse" : "md:flex-row"
               } gap-3 items-center m-auto `}
             >
               <div className="flex flex-col items-center  w-full justify-center ">
-                <h1 className="font-poppins mb-4 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
-                  Limited offer
+                <h1 className="font-poppins mb-4 text-slate-800 text-2xl font-bold flex items-center justify-center flex-wrap">
+                  {content[lang].title.offers}
                 </h1>
 
+                <p className="text-gray-500 font-semibold text-lg my-2">
+                  {content[lang].title.limited}
+                </p>
                 <Counter />
                 <div className="flex justify-center  items-center">
                   <Link
                     className=" flex  w-fit bg-slate-700 rounded-lg text-white px-6 py-2 text-center mt-4 font-semibold  "
                     to="/Shop"
                   >
-                    Shop now
+                    {content[lang].landing.btn}
                   </Link>
                 </div>
               </div>

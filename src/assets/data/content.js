@@ -32,14 +32,24 @@ export const content = {
             name: "Name",
             subject: "Subject",
             message: "Message",
-            send: "Send"
+            send: "Send",
+            number: "Phone number",
+            adress: "Kolea route de meubles, Kolea, Algeria",
+            order:"Order now"
 
         },
         "title": {
             services: "Fearures",
             trend: "Trending Product",
-            products: "products"
-        }
+            products: "products",
+            offers: "Limited offer",
+            limited: "Purchase products and participate in the Tomola for a chance to win a 50-inch stove and TV.",
+            useful: "useful links",
+            description: "description",
+            also: "You might also like"
+
+        },
+
     },
     "ar": {
         "landing": {
@@ -71,7 +81,10 @@ export const content = {
             name: "الاسم",
             subject: "الموضوع",
             message: "الرسالة",
-            send: "إرسال"
+            send: "إرسال",
+            number: "رقم الهاتف",
+            adress: "طريق الأثاث، القليعة، الجزائر",
+            order:"اطلب الآن"
 
 
         },
@@ -79,7 +92,11 @@ export const content = {
             "services": "الميزات",
             "trend": "المنتج الرائج",
             "products": "المنتجات",
-            offers: "Limited offer"
+            offers: "عرض محدود",
+            useful: "روابط مفيدة",
+            description: "الوصف",
+            limited: "اشترِ المنتجات وشارك في تومولا للفوز 50 موقد وتلفزيون",
+            also: "قد تعجبك أيضًا"
         }
 
     },
@@ -114,12 +131,20 @@ export const content = {
             name: "Nom",
             subject: "Sujet",
             message: "Message",
-            send: "Envoyer"
+            send: "Envoyer",
+            number: "numéro de téléphone",
+            adress: "Route des meubles, Kolea, Algérie",
+            order:"Commandez maintenan"
         },
         "title": {
             "services": "Caractéristiques",
             "trend": "Produit Tendance",
-            "products": "Produits"
+            "products": "Produits",
+            offers: "Offre limitée",
+            useful: "Liens utiles",
+            description: "description",
+            also: "Vous pourriez également aime",
+            limited: "Achetez des produits et participez à la tombola pour avoir la chance de gagner de 50 poêles et télévisions  ."
         }
 
     }

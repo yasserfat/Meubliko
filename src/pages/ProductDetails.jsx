@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Halmet from "../components/Halmet";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 // import products from "../assets/data/products";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CommenSection from "../components/CommenSection";
 import ProductList from "../UI/ProductList";
 import { toast } from "react-toastify";
@@ -21,6 +21,7 @@ import UsegetProductData from "../custem-hooks/getProductData";
 import UseAuth from "../custem-hooks/UserAuth";
 import products from "../assets/data/products";
 import realProduct from "../assets/data/RealProducts";
+import { content } from "../assets/data/content";
 export default function ProductDetails() {
   const { currentUser } = UseAuth();
   const { lang } = useSelector((store) => store.cart);
@@ -147,14 +148,12 @@ export default function ProductDetails() {
                 {item.price}
               </p>
               <p className="text-gray-600 text-md">{item.shortDesc}</p>
-              <button
-                onClick={() => {
-                  handelCartData(item);
-                }}
-                className="bg-slate-900 text-slate-100 rounded-md flex px-6 py-2 mt-3 shadow-md shadow-slate-500"
+              <Link
+                to={`/MakeDeal/${item.id}`}
+                className="bg-slate-900 text-slate-100 w-fit rounded-md flex px-6 py-2 mt-3 shadow-md shadow-slate-500"
               >
-                Add to cart
-              </button>
+                {content[lang].contact.order}
+              </Link>
             </div>
           </div>
           <div className="p-4  container m-auto ">
@@ -167,7 +166,7 @@ export default function ProductDetails() {
                     : "font-semibold"
                 } `}
               >
-                description
+                {content[lang].title.description}
               </li>
             </ul>
             <div className="container m-auto">
@@ -176,7 +175,7 @@ export default function ProductDetails() {
           </div>
           <section className="container m-auto ">
             <h1 className="font-poppins mt-8 ml-8 text-slate-900 text-2xl font-bold flex items-center justify-start flex-wrap">
-              You might also like
+              {content[lang].title.also}
             </h1>
             <div className="">
               <ProductList data={realProduct} />

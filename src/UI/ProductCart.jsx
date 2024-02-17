@@ -9,7 +9,7 @@ import {
 import { updateCurrentUser } from "firebase/auth";
 import UseAuth from "../custem-hooks/UserAuth";
 export default function ProductCart({ items }) {
-  console.log(items,"items")
+  console.log(items, "items");
   const { currentUser } = UseAuth();
   const dispatch = useDispatch();
   function addItemtoCart(item) {
@@ -79,7 +79,6 @@ export default function ProductCart({ items }) {
                   fill="currentColor"
                   className="bi bi-bag-plus z-80 cursor-pointer"
                   viewBox="0 0 16 16"
-                  onClick={() => addItemtoCart(items)}
                 >
                   <path
                     fill-rule="evenodd"

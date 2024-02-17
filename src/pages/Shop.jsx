@@ -7,6 +7,8 @@ import ProductList from "../UI/ProductList";
 import UsegetProductData from "../custem-hooks/getProductData";
 import Loader from "../components/LoaderComp";
 import products from "../assets/data/products";
+import { content } from "../assets/data/content";
+import { useSelector } from "react-redux";
 export default function Shop() {
   // const { loader } = UsegetProductData("products");
   const loader = true;
@@ -40,9 +42,10 @@ export default function Shop() {
       )
     );
   };
+  const {lang} = useSelector(store=> store.cart)
   return (
     <Halmet title="shop">
-      <CommenSection title="products" />
+      <CommenSection title={content[lang].title.trend} />
 
       <section className="p-4 my-4">
         <div className="flex justify-between items-center flex-col gap-4 container m-auto">
