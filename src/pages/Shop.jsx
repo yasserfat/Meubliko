@@ -50,22 +50,7 @@ export default function Shop() {
       <section className="p-4 my-4">
         <div className="flex justify-between items-center flex-col gap-4 container m-auto">
           <div className="flex justify-around w-full">
-            <select
-              onChange={(e) => Filter(e)}
-              className="bg-slate-900 p-2 text-slate-100 focus:outline-none"
-            >
-              <option>Filter By category</option>
-              <option value="sofa">sofa</option>
-              <option value="chair">chair</option>
-              <option value="wireless">wireless</option>
-              <option value="watch">watch</option>
-              <option value="mobile">mobile</option>
-            </select>
-            <select className="bg-slate-900 p-2 text-slate-100 focus:outline-none">
-              <option>Sort By</option>
-              <option value="ascending">ascending</option>
-              <option value="descending">descending</option>
-            </select>
+        
           </div>
           <div className="flex items-center w-full">
             <input
