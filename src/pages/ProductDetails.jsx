@@ -133,7 +133,7 @@ export default function ProductDetails() {
               <Splide aria-label="My Favorite Images">
                 {item.imgUrl.map((img, i) => (
                   <SplideSlide key={i} onClick={() => console.log("dd")}>
-                    <img src={img} className="w-full" alt="Image 1" />
+                    <img src={img} className="" alt="Image 1" />
                   </SplideSlide>
                 ))}
               </Splide>
@@ -183,6 +183,7 @@ export default function ProductDetails() {
           </section>
         </section>
       )}
+      
     </Halmet>
   );
 }
