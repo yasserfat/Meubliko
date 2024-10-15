@@ -1,50 +1,63 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {db,storage} from  '../firebase/firebaseConfig'
-import { ref, uploadBytesResumable,getDownloadURL} from "firebase/storage";
-import { collection,addDoc } from "firebase/firestore"; 
+import { db, storage } from '../firebase/firebaseConfig';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore"; 
 import { useNavigate } from "react-router-dom";
+
 export default function AddProducts() {
-  const [load,setLoad] = useState(false)
-  const navigate =  useNavigate()
+  const [load, setLoad] = useState(false);
+  const navigate = useNavigate();
   const [newProductdata, setNewProductdata] = useState({
     productName: "",
     imgUrl: '',
     category: "",
     price: 0,
-    shortDesc:'',
-    description:'',
+    shortDesc: '',
+    description: '',
   });
-  const handelChange = (e)=> {
-    setNewProductdata({...newProductdata, [e.target.name]:e.target.value})
-  }
-  const handelUpload = async(e)=> {
-    setLoad(true)
+
+  const handelChange = (e) => {
+    setNewProductdata({ ...newProductdata, [e.target.name]: e.target.value });
+  };
+
+  const handelUpload = async (e) => {
+    setLoad(true);
     e.preventDefault();
 
     try {
-      const docRef = await collection(db,"products");
-      const storeRef = ref(
-        storage,
-        `productsImages/${Date.now() + newProductdata.imgUrl.name}`
-      );
+      const storeRef = ref(storage, `productsImages/${Date.now() + newProductdata.imgUrl.name}`);
       const uploadTask = uploadBytesResumable(storeRef, newProductdata.imgUrl);
-      uploadTask.on(()=>{
-        toast.error('image not uploaded')
-      },()=>{
-        getDownloadURL(uploadTask.snapshot.ref).then (async(downloadURL)=> {
-          await addDoc(docRef, { ...newProductdata, imgUrl: downloadURL });
-        })
-      })
-      toast.success("product  added succesfully ");
-    setLoad(false);
-    navigate("/DashBoard/AllProducts");
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // Optional: Monitor progress of the upload here
+        },
+        (error) => {
+          toast.error('Image upload failed');
+          setLoad(false);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          
+          // Create Firestore document only after image is uploaded
+          await addDoc(collection(db, "products"), {
+            ...newProductdata,
+            imgUrl: downloadURL,  // Set image URL in Firestore document
+          });
+          
+          toast.success("Product added successfully");
+          setLoad(false);
+          navigate("/DashBoard/AllProducts");
+        }
+      );
     } catch (error) {
-      console.error(error)
+      toast.error('Error adding product');
+      console.error(error);
+      setLoad(false);
     }
-    // toast.success('product added succesfully ')
-  }
-  console.log(newProductdata.imgUrl)
+  };
   return (
     <div className="p-4">
      { load?<h1>loading ....</h1>: <div className="container m-auto ">

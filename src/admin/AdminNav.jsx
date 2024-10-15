@@ -17,10 +17,7 @@ export default function AdminNav() {
          path: "/DashBoard/AddProducts",
          element: "AddProducts",
        },
-       {
-         path: "/DashBoard/Users",
-         element: "Users",
-       },
+       
      ];
   return (
     <>
