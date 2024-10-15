@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
         signUpData.password)
         setLoader(false)
         console.log("loges")
-        navigate("/Cart/ChechOut");
+        navigate("/DashBoard");
     } catch (error) {
       toast.error(error.message)
       setLoader(false)
