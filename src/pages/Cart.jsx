@@ -15,6 +15,9 @@ import { Link } from "react-router-dom";
 import UsegetProductData from "../custem-hooks/getProductData";
 import UseAuth from "../custem-hooks/UserAuth";
 import { useEffect, useState } from "react";
+
+import loadingGif from "../assets/images/shopping-loader.gif";
+
 export default function Cart() {
   const { totalAmount, dataFromFireBase } = useSelector((cart) => cart.cart);
   const { currentUser } = UseAuth();
@@ -22,18 +25,16 @@ export default function Cart() {
   const { data: cartIm, loader } = UsegetProductData("users");
   const [isLogedIn, setIsLogedIn] = useState(currentUser?.emailVerified);
 
-
-
   function handelDeleteItems(item) {
     dispatch(deleteItem(item));
     if (currentUser?.emailVerified) {
       dispatch(addCartItemToFirestore(currentUser?.uid));
-    }   else {
+    } else {
       dispatch(addToLocalStorage());
     }
   }
   function handelIncrease(item) {
-    dispatch(increase(item))
+    dispatch(increase(item));
     if (currentUser?.emailVerified) {
       dispatch(addCartItemToFirestore(currentUser?.uid));
     } else {
@@ -41,7 +42,7 @@ export default function Cart() {
     }
   }
   function handelDecrease(item) {
-    dispatch(decrease(item))
+    dispatch(decrease(item));
     if (currentUser?.emailVerified) {
       dispatch(addCartItemToFirestore(currentUser?.uid));
     } else {
@@ -52,7 +53,9 @@ export default function Cart() {
     <Halmet title="cart">
       <CommenSection title="cart" />
       {!loader ? (
-        <Loader />
+        <div className="flex items-start justify-center">
+          <img src={loadingGif} alt="loading-gif" />
+        </div>
       ) : (
           currentUser?.emailVerified
             ? dataFromFireBase?.length === 0

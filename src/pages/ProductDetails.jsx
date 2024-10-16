@@ -22,6 +22,9 @@ import UseAuth from "../custem-hooks/UserAuth";
 import products from "../assets/data/products";
 import realProduct from "../assets/data/RealProducts";
 import { content } from "../assets/data/content";
+
+import loadingGif from "../assets/images/shopping-loader.gif";
+
 export default function ProductDetails() {
   const { currentUser } = UseAuth();
   const { lang } = useSelector((store) => store.cart);
@@ -125,7 +128,9 @@ export default function ProductDetails() {
     <Halmet title={item?.productName}>
       <CommenSection title={item?.productName} />
       {!loader ? (
-        <h1>loading ...</h1>
+        <div className="flex items-start justify-center">
+          <img src={loadingGif} alt="loading-gif" />
+        </div>
       ) : (
         <section className="p-4  ">
           <div className="container m-auto flex items-center flex-col md:flex-row justify-between ">
@@ -183,7 +188,6 @@ export default function ProductDetails() {
           </section>
         </section>
       )}
-      
     </Halmet>
   );
 }

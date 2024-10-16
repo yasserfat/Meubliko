@@ -1,84 +1,70 @@
+import { IoMdSend } from "react-icons/io";
+import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6";
 
-import { AiFillPhone, AiOutlineMail } from "react-icons/ai";
-import { BiLocationPlus } from "react-icons/bi";
-import { Link } from "react-router-dom";
-
-import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { content } from "../assets/data/content";
 export default function Footer() {
-  const { lang } = useSelector((store) => store.cart);
   return (
-    <footer className="p-8 mt-4 bg-[#091a37] text-gray-400 ">
-      <div className="container grid gap-4 m-auto grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    <footer className="px-8 pt-[50px] bg-[#091a37] text-white">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-[30px]">
         <div>
-          <div className="flex gap-1 items-center  ">
-            {/* <BsFillBagCheckFill className="font-normal text-xl text-gray-500" /> */}
-            <Link
-              to="/"
-              className="font-bold text-2xl text-slate-600 font-poppins"
-            >
-              Meubliko
-            </Link>
+          <h1 className="text-xl font-bold">Exclusive</h1>
+          <h2 className="my-[15px]">S'abonner</h2>
+          <p className="text-gray-400">Obtenez 10% de réduction sur votre première commande</p>
+          <div className="mt-[15px] px-[10px] py-[5px] rounded-lg border border-white flex items-center justify-between gap-[15px] flex-row flex-nowrap">
+            <input
+              className="outline-none bg-transparent flex-1"
+              type="text"
+              placeholder="Enter your email"
+            />
+            <IoMdSend className="text-white" />
           </div>
-          <ul className="flex mt-3 space-x-4">
-            <a
-              href="https://web.facebook.com/Meubliko/?_rdc=1&_rdr"
-              target="blank"
-            >
-              <FaFacebook className="text-2xl" />
-            </a>
-            <a
-              href="https://web.facebook.com/Meubliko/?_rdc=1&_rdr"
-              target="blank"
-            >
-              <FaInstagram className="text-2xl " />
-            </a>
-            <a
-              href="https://web.facebook.com/Meubliko/?_rdc=1&_rdr"
-              target="blank"
-            >
-              <FaYoutube className="text-2xl" />
-            </a>
-          </ul>
-          <p className="mt-3 text-gray-600"> {content[lang].landing.tille}</p>
         </div>
-
         <div>
-          <h2 className="font-bold text-xl text-slate-200 mb-3">
-            {content[lang].title.useful}
-          </h2>
-          <ul className="flex flex-col  justify-start gap-1">
-            {content[lang].header.routers.map((item, i) => (
-              <li key={i}>
-                <Link to={item.path}>{item.element}</Link>
-              </li>
-            ))}
+          <h1 className="text-xl font-bold">Support</h1>
+          <ul className="flex flex-col gap-[15px] mt-[15px] text-gray-400">
+            <li>111 Bijoy sarani, Dhaka, DH 1515, Bangladesh.</li>
+            <li>exclusive@gmail.com</li>
+            <li>+88015-88888-9999</li>
           </ul>
         </div>
         <div>
-          <h2 className="font-bold text-xl text-slate-200 mb-3">
-            {" "}
-            {content[lang].contact.title}
-          </h2>
-          <ul className="flex flex-col   gap-3">
-            <li className=" flex gap-1 items-center ">
-              <BiLocationPlus />
-              {content[lang].contact.adress}
+          <h1 className="text-xl font-bold">Account</h1>
+          <ul className="flex flex-col gap-[15px] mt-[15px] text-gray-400">
+            <li>My Account</li>
+            <li>Login / Register</li>
+            <li>Cart</li>
+            <li>Wishlist</li>
+            <li>Shop</li>
+          </ul>
+        </div>
+        <div>
+          <h1 className="text-xl font-bold">Quick Link</h1>
+          <ul className="flex flex-col gap-[15px] mt-[15px] text-gray-400">
+            <li>Privacy Policy</li>
+            <li>Terms Of Use</li>
+            <li>FAQ</li>
+            <li>Contact</li>
+          </ul>
+        </div>
+        <div>
+          <h1 className="text-xl font-bold">Social Media</h1>
+          <ul className="flex flex-row gap-[20px] mt-[30px] text-gray-400">
+            <li>
+              <FaFacebook className="text-xl" />
             </li>
-            <li className=" flex gap-1 items-center ">
-              {" "}
-              <AiFillPhone />
-              +213556437656
+            <li>
+              <FaInstagram className="text-xl" />
             </li>
-            <li className=" flex gap-1 items-center ">
-              {" "}
-              <AiOutlineMail />
-              aes.harmouche@gmail.com
+            <li>
+              <FaTwitter className="text-xl" />
+            </li>
+            <li>
+              <FaLinkedin className="text-xl" />
             </li>
           </ul>
         </div>
       </div>
+      <p className="mt-[50px] text-center text-gray-400 border-t border-gray-400 py-[20px]">Copyright Meubliko 2024. All right reserved</p>
     </footer>
   );
 }

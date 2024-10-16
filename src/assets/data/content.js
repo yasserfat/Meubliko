@@ -39,7 +39,7 @@ export const content = {
 
         },
         "title": {
-            services: "Fearures",
+            services: "Features",
             trend: "Trending Product",
             products: "products",
             offers: "Limited offer",

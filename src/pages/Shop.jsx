@@ -9,6 +9,9 @@ import Loader from "../components/LoaderComp";
 import products from "../assets/data/products";
 import { content } from "../assets/data/content";
 import { useSelector } from "react-redux";
+
+import loadingGif from "../assets/images/shopping-loader.gif";
+
 export default function Shop() {
   // const { loader } = UsegetProductData("products");
   const loader = true;
@@ -42,16 +45,14 @@ export default function Shop() {
       )
     );
   };
-  const {lang} = useSelector(store=> store.cart)
+  const { lang } = useSelector((store) => store.cart);
   return (
     <Halmet title="shop">
       <CommenSection title={content[lang].title.trend} />
 
       <section className="p-4 my-4">
         <div className="flex justify-between items-center flex-col gap-4 container m-auto">
-          <div className="flex justify-around w-full">
-        
-          </div>
+          <div className="flex justify-around w-full"></div>
           <div className="flex items-center w-full">
             <input
               onChange={handelSerach}
@@ -69,7 +70,13 @@ export default function Shop() {
 
       <section className="container m-auto ">
         <div className="">
-          {!loader ? <Loader /> : <ProductList data={productsData} />}
+          {!loader ? (
+            <div className="flex items-start justify-center">
+              <img src={loadingGif} alt="loading-gif" />
+            </div>
+          ) : (
+            <ProductList data={productsData} />
+          )}
         </div>
       </section>
     </Halmet>

@@ -7,15 +7,15 @@ export default function AdminNav() {
      const adminRouters = [
        {
          path: "/DashBoard",
-         element: "DashBoard",
+         element: "Orders",
        },
        {
          path: "/DashBoard/AllProducts",
-         element: "AllProducts",
+         element: "All Products",
        },
        {
          path: "/DashBoard/AddProducts",
-         element: "AddProducts",
+         element: "Add Product",
        },
        
      ];
