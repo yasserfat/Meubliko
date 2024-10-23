@@ -1,75 +1,114 @@
-import UsegetProductData from "../custem-hooks/getProductData";
 import { AiFillDelete } from "react-icons/ai";
 import { db } from "../firebase/firebaseConfig";
-import { deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 
 import loadingGif from "../assets/images/shopping-loader.gif";
 import noItemsImg from "../assets/images/no-items.avif";
+import { useEffect, useState } from "react";
 
 export default function AllProducts() {
-  const { data, loader } = UsegetProductData("products");
-  console.log(data);
-  const deleteItem = async (id) => {
-    await deleteDoc(doc(db, "products", id));
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const itemsSnapshot = await getDocs(collection(db, "products"));
+        const fetchedItems = itemsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setData(fetchedItems);
+      } catch (error) {
+        console.error("Error fetching items: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const deleteItem = async (itemId) => {
+    console.log(itemId)
+    try {
+      const itemRef = doc(db, 'products', String(itemId));
+      await deleteDoc(itemRef);
+      console.log('Item successfully deleted');
+    } catch (error) {
+      console.error('Error deleting item: ', error);
+    }
   };
+
   return (
     <div>
-      <table className="container m-auto p-4 ">
-        <thead className="shadow-gray-400 border-b-gray-300  border-b-[2px] p-8 ">
-          <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Price </th>
-            <th>category</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        {!loader ? (
-          <div className="flex items-start justify-center mt-[50px]">
-            <img src={loadingGif} alt="loading-gif" />
-          </div>
-        ) : (
-          <tbody className="p-4">
-            {data.length === 0 ? (
-              <tr>
-                <td colSpan="5" className="text-center py-4">
+      <h1 className="mt-8 text-slate-900 text-2xl font-bold flex items-center justify-center flex-wrap">
+        Products List
+      </h1>
+      {loading ? (
+        <div className="flex items-start justify-center">
+          <img src={loadingGif} alt="loading-gif" />
+        </div>
+      ) : data.length > 0 ? (
+        <table className="table-auto border-collapse w-full text-left my-8">
+          <thead>
+            <tr>
+              <th className="border px-4 py-2">Image</th>
+              <th className="border px-4 py-2">Product Name</th>
+              <th className="border px-4 py-2">Short Description</th>
+              <th className="border px-4 py-2">Description</th>
+              <th className="border px-4 py-2">Price</th>
+              <th className="border px-4 py-2">Category</th>
+              <th className="border px-4 py-2">Size</th>
+              <th className="border px-4 py-2">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.id}>
+                <td className="border px-4 py-2">
                   <img
-                    src={noItemsImg}
-                    alt="No items"
-                    className="w-[300px] mx-auto mb-4"
+                    className="w-32 md:w-40"
+                    src={item.mainImg}
+                    alt={item.productName}
                   />
-                  <span className="text-xl font-semibold">
-                    No items available.
-                  </span>
+                </td>
+                <td className="border px-4 py-2 text-sm md:text-lg font-semibold">
+                  {item.productName}
+                </td>
+                <td className="border px-4 py-2 text-sm md:text-lg font-semibold">
+                  {item.shortDesc}
+                </td>
+                <td className="border px-4 py-2 text-sm md:text-lg font-semibold">
+                  {item.description}
+                </td>
+                <td className="border px-4 py-2 text-sm md:text-lg font-semibold">
+                  {item.price} DA
+                </td>
+                <td className="border px-4 py-2 text-sm md:text-lg font-semibold">
+                  {item.category.toUpperCase()}
+                </td>
+                <td className="border px-4 py-2 text-sm md:text-lg font-semibold">
+                  {item.size.toUpperCase()}
+                </td>
+                <td className="border px-4 py-2 text-red-600 text-xl cursor-pointer">
+                  <AiFillDelete onClick={() => deleteItem(item.id)} />
                 </td>
               </tr>
-            ) : (
-              data.map((item) => {
-                return (
-                  <tr key={item.id} className="space-y-14">
-                    <th>
-                      <img className="w-32 md:w-40" src={item.imgUrl} alt="" />
-                    </th>
-                    <th className="text-sm md:text:lg font-semibold">
-                      {item.productName}
-                    </th>
-                    <th className="text-sm md:text:lg font-semibold">
-                      <span className="mr-1">$</span>
-                      {item.price}
-                    </th>
-                    <th className="text-sm md:text:lg font-semibold">
-                      {item.category}
-                    </th>
-                    <th className="text-red-600 text-xl cursor-pointer">
-                      <AiFillDelete onClick={() => deleteItem(item.id)} />
-                    </th>
-                  </tr>
-                );
-              })
-            )}
+            ))}
           </tbody>
-        )}
-      </table>
+        </table>
+      ) : (
+        <div className="flex flex-col my-[50px] items-center justify-center">
+          <p className="mb-[10px] font-bold">No items available.</p>
+          <img
+            src={noItemsImg}
+            alt="No items"
+            className="w-[300px] mx-auto mb-4"
+          />
+        </div>
+      )}
     </div>
   );
 }

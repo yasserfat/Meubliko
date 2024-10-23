@@ -14,70 +14,54 @@ export default function AddProducts() {
   const [shortDesc, setShortDesc] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("sofa");
   const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState("s");
   const [mainImg, setMainImg] = useState("");
   const [imgOne, setImgOne] = useState("");
   const [imgTwo, setImgTwo] = useState("");
   const [imgThree, setImgThree] = useState("");
   const [imgFour, setImgFour] = useState("");
 
-  const handelUpload = async (e) => {
-    setLoad(true);
-    e.preventDefault();
+  const uploadImage = async (imageFile) => {
+    const imageRef = ref(
+      storage,
+      `productsImages/${Date.now()}_${imageFile.name}`
+    );
+    const uploadTask = await uploadBytesResumable(imageRef, imageFile);
+    return await getDownloadURL(uploadTask.ref);
+  };
 
-    // if (
-    //   !productName ||
-    //   !mainImg ||
-    //   !category ||
-    //   price <= 0 ||
-    //   !shortDesc ||
-    //   !description
-    // ) {
-    //   toast.error("Please fill in all required fields.");
-    //   setLoad(false);
-    //   return;
-    // }
-
+  const handelUpload = async () => {
     try {
-      const storeRef = ref(
-        storage,
-        `productsImages/${Date.now()}_${mainImg.name}`
-      );
-      const uploadTask = uploadBytesResumable(storeRef, mainImg);
+      setLoad(true);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          // Optional: Monitor progress of the upload here
-        },
-        (error) => {
-          toast.error("Image upload failed");
-          setLoad(false);
-        },
-        async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      const mainImageUrl = await uploadImage(mainImg);
 
-          // Create Firestore document only after image is uploaded
-          await addDoc(collection(db, "products"), {
-            productName,
-            shortDesc,
-            description,
-            price,
-            category,
-            mainImg: downloadURL,
-            imgOne,
-            imgTwo,
-            imgThree,
-            imgFour,
-          });
+      const imageOneUrl = imgOne ? await uploadImage(imgOne) : "";
+      const imageTwoUrl = imgTwo ? await uploadImage(imgTwo) : "";
+      const imageThreeUrl = imgThree ? await uploadImage(imgThree) : "";
+      const imageFourUrl = imgFour ? await uploadImage(imgFour) : "";
 
-          toast.success("Product added successfully");
-          setLoad(false);
-          navigate("/DashBoard/AllProducts");
-        }
-      );
+      await addDoc(collection(db, "products"), {
+        id: Math.random(),
+        productName,
+        shortDesc,
+        description,
+        price,
+        category,
+        color,
+        size,
+        mainImg: mainImageUrl,
+        imgOne: imageOneUrl,
+        imgTwo: imageTwoUrl,
+        imgThree: imageThreeUrl,
+        imgFour: imageFourUrl,
+      });
+
+      toast.success("Product added successfully");
+      setLoad(false);
+      navigate("/DashBoard/AllProducts");
     } catch (error) {
       toast.error("Error adding product");
       console.error(error);
@@ -220,6 +204,7 @@ export default function AddProducts() {
             <select
               required
               name="category"
+              value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="outline-none border-b border-gray-400 py-[3px]"
             >
@@ -232,31 +217,31 @@ export default function AddProducts() {
               type="file"
               className="outline-none border-b border-gray-400 py-[3px]"
               placeholder="Product main image"
-              onChange={(e) => setMainImg(e.target.value)}
+              onChange={(e) => setMainImg(e.target.files[0])}
             />
             <input
               type="file"
               className="outline-none border-b border-gray-400 py-[3px]"
               placeholder="Product image one"
-              onChange={(e) => setImgOne(e.target.value)}
+              onChange={(e) => setImgOne(e.target.files[0])}
             />
             <input
               type="file"
               className="outline-none border-b border-gray-400 py-[3px]"
               placeholder="Product image two"
-              onChange={(e) => setImgTwo(e.target.value)}
+              onChange={(e) => setImgTwo(e.target.files[0])}
             />
             <input
               type="file"
               className="outline-none border-b border-gray-400 py-[3px]"
               placeholder="Product image three"
-              onChange={(e) => setImgThree(e.target.value)}
+              onChange={(e) => setImgThree(e.target.files[0])}
             />
             <input
               type="file"
               className="outline-none border-b border-gray-400 py-[3px]"
               placeholder="Product image four"
-              onChange={(e) => setImgFour(e.target.value)}
+              onChange={(e) => setImgFour(e.target.files[0])}
             />
             <div className="flex flex-row gap-[15px] outline-none border-b border-gray-400 py-[3px]">
               <label htmlFor="color-picker" className="text-gray-500 mb-2">
@@ -273,6 +258,7 @@ export default function AddProducts() {
             <select
               required
               name="size"
+              value={size}
               onChange={(e) => setSize(e.target.value)}
               className="outline-none border-b border-gray-400 py-[3px]"
             >
@@ -296,7 +282,7 @@ export default function AddProducts() {
             onClick={handelUpload}
             className="mt-[50px] bg-[#DB4444] w-full rounded px-6 py-2 font-semibold text-slate-100"
           >
-            add product
+            Add product
           </button>
         </div>
       )}
